@@ -20,17 +20,18 @@ public class MainActivity extends AppCompatActivity {
         btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
     }
 
-    public void onSelectToShow(View view){
-        boolean checkToShow = ((RadioButton)view).isChecked();
 
-        switch (view.getId()){
+    public void onSelectToShow(View view) {
+        boolean checkToShow = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
             case R.id.rbAllDevicesSelect:
-                if (checkToShow){
+                if (checkToShow) {
                     //TODO set to show all devices
                     break;
                 }
             case R.id.rbActivDevicesSelect:
-                if (checkToShow){
+                if (checkToShow) {
                     //TODO set to show only activated devices
                     break;
                 }

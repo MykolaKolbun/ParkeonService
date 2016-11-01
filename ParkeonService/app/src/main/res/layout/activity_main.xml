@@ -4,110 +4,110 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:padding="10dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ua.com.alternatiview.parkeonservice.MainActivity"
-    android:focusable="false"
     android:weightSum="1"
-    android:orientation="vertical"
-    android:baselineAligned="false"
-    android:padding="10dp">
+    tools:context="ua.com.alternatiview.parkeonservice.MainActivity">
 
 
     <TextView
-        android:text="Search device:"
-        android:layout_width="wrap_content"
         android:id="@+id/textView4"
-        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="Search device:"
         android:textColor="@android:color/background_dark"
-        android:textStyle="normal|bold"
-        android:layout_height="25dp" />
+        android:textSize="20sp"
+        android:textStyle="normal|bold" />
 
     <EditText
+        android:id="@+id/etSearchDeviceName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:ems="10"
-        android:id="@+id/etSearchDeviceName"
-        android:hint="Type device name here..." />
+        android:hint="Type device name here..."
+        android:inputType="text" />
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="142dp" >
+        android:layout_height="142dp">
 
         <RadioButton
-            android:text="Show all devices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/rbAllDevicesSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="false"
-            android:layout_weight="1"
-            android:onClick="selectToShow"/>
+            android:onClick="selectToShow"
+            android:text="Show all devices" />
 
         <RadioButton
-            android:text="Show Activated devices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/rbActivDevicesSelect"
-            android:layout_weight="1"
-            android:onClick="selectToShow"/>
-
-        <RadioButton
-            android:text="Show non-Activated devices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rbNonActiveDeviceSelect"
-            android:duplicateParentState="false"
             android:layout_weight="1"
-            android:onClick="onSelectToShow"/>
+            android:onClick="selectToShow"
+            android:text="Show Activated devices" />
+
+        <RadioButton
+            android:id="@+id/rbNonActiveDeviceSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:duplicateParentState="false"
+            android:onClick="onSelectToShow"
+            android:text="Show non-Activated devices" />
 
     </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="74dp"
-        android:weightSum="1"
-        android:elevation="0dp">
+        android:elevation="0dp"
+        android:weightSum="1">
 
         <Button
-            android:text="Advanced Search"
             android:id="@+id/btnAdvancedSearch"
-            android:background="@android:drawable/progress_horizontal"
-            android:padding="10dp"
+            android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_weight="0.39"
-            android:textAlignment="center"
-            android:layout_width="110dp"
-            tools:ignore="TextViewEdits"
-            android:onClick="onAdvSearch" />
-
-        <Button
-            android:text="View detailed"
-            android:id="@+id/btnViewDetailed"
             android:background="@android:drawable/progress_horizontal"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
-            android:layout_width="110dp"
-            tools:ignore="TextViewEdits"
-            android:onClick="onVeiwDetailed" />
-
-        <Button
-            android:text="Show on Map"
-            android:id="@+id/btnShowOnMap"
-            android:background="@android:drawable/progress_horizontal"
+            android:onClick="onAdvSearch"
             android:padding="10dp"
+            android:text="Advanced Search"
+            android:textAlignment="center"
+            tools:ignore="TextViewEdits" />
+
+        <Button
+            android:id="@+id/btnViewDetailed"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/progress_horizontal"
+            android:onClick="onVeiwDetailed"
+            android:text="View detailed"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            tools:ignore="TextViewEdits" />
+
+        <Button
+            android:id="@+id/btnShowOnMap"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/progress_horizontal"
+            android:elegantTextHeight="false"
+            android:onClick="onShowOnMap"
+            android:padding="10dp"
+            android:paddingBottom="3dp"
+            android:paddingEnd="3dp"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:paddingStart="3dp"
             android:paddingTop="3dp"
-            android:paddingEnd="3dp"
-            android:paddingBottom="3dp"
-            android:layout_height="match_parent"
-            android:layout_width="110dp"
-            android:elegantTextHeight="false"
-            android:onClick="onShowOnMap" />
+            android:text="Show on Map" />
     </LinearLayout>
 
 </LinearLayout>
