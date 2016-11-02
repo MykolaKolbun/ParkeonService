@@ -16,6 +16,7 @@ public class Device {
         this.machineID = machineID;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.status = false;
     }
     public Device (String machineID, double latitude, double longitude, boolean status ){
         this.machineID = machineID;
