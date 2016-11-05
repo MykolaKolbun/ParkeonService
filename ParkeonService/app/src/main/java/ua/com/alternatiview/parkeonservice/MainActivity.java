@@ -14,11 +14,11 @@ import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
     Context context;
-    LinkedList<Device> machineList = new LinkedList<Device>();
+    LinkedList<Device> machineList = new LinkedList<>();
     Button btnShowOnMap, btnViewDetailed, btnAdvancedSearch;
     static EditText etSearchText;
     Device machine;
-    Double res;
+    String res;
 
 
     //String res;
@@ -41,13 +41,15 @@ public class MainActivity extends AppCompatActivity {
     public void onVeiwDetailed(View view){
         DB_connect con = new DB_connect();
         try{
-            machine = con.GetDevice("10031141");
-            //res = con.GetDevice("10031141");
+            //machine = con.GetDevice("10031141");
+            machineList = DB_connect.GetAllDevices();
+            //res = con.GetAllDevices();
+
         }catch (Exception e){
             Toast.makeText(context, e.toString(),Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(context, Double.toString(machine.latitude),
-                Toast.LENGTH_LONG).show();;
+        Toast.makeText(context, String.valueOf(machineList.size()), Toast.LENGTH_LONG).show();
+
     }
     //Обработка выбора типа фильтра для показа на карте
     public void onSelectToShow(View view) {
