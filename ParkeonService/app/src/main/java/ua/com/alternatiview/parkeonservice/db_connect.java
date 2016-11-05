@@ -1,5 +1,7 @@
 package ua.com.alternatiview.parkeonservice;
 
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,9 +91,7 @@ public class DB_connect {
                     int query_result = jsonObject.getInt("success");
                     //test = String.valueOf(device.length());
                     if (query_result > 0) {
-                        //TODO Fill out machine from JSON
                         for (int i = 0; i < device.length(); i++) {
-                            //test = String.valueOf(i);
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Longitude");
@@ -106,12 +106,15 @@ public class DB_connect {
                         }
 
                     } else {
-                        //TODO Show - jsonObj.getString("message")
+                        //TODO Check if it's working.
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
 
                     }
                 } catch (JSONException e) {
-                    //TODO Show error "Error parsing JSON data."
-
+                    //TODO Check if it's working
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -122,6 +125,5 @@ public class DB_connect {
 
 
         return devicesList;
-        //return test;
     }
 }

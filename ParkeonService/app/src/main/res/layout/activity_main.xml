@@ -41,36 +41,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_y="300dp"
-        android:layout_x="10dp">
+        android:layout_x="10dp"
+        android:id="@+id/rgSelector"
+        android:checkedButton="@+id/a">
 
         <RadioButton
-            android:id="@+id/rbNonActiveDeviceSelect"
+            android:id="@+id/a"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_weight="1"
-            android:duplicateParentState="false"
-            android:onClick="onSelectToShow"
-            android:text="Show non-Activated devices"
-            android:layout_x="11dp"
-            android:layout_y="152dp" />
+            android:text="Show all devices"
+            android:layout_x="10dp"
+            android:layout_y="257dp"
+            android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/rbAllDevicesSelect"
+            android:id="@+id/b"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:checked="false"
-            android:onClick="selectToShow"
-            android:text="Show all devices" />
-
-        <RadioButton
-            android:id="@+id/rbActivDevicesSelect"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:onClick="selectToShow"
             android:text="Show Activated devices"
-            android:layout_x="7dp"
+            android:layout_x="10dp"
             android:layout_y="167dp"
             android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/c"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:text="Show non-Activated devices"
+            android:layout_x="10dp"
+            android:layout_y="152dp"
+            android:checked="false" />
 
     </RadioGroup>
 
