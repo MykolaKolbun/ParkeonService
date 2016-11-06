@@ -22,7 +22,7 @@ import java.util.LinkedList;
 public class DB_connect {
 
     //Метод взять данные определенного девайса из базы
-    static public Device GetDevice(String machineName) {
+    public Device GetDevice(String machineName) {
         BufferedReader stringToReciev;
         String result = "";
 
@@ -39,44 +39,42 @@ public class DB_connect {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray device = jsonObject.getJSONArray("Device");
-
                     int query_result = jsonObject.getInt("success");
                     if (query_result > 0) {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Longitude");
-                            Boolean status = device.getJSONObject(i).getBoolean("Status");
+                            Boolean status;
+                            int tempStatus = device.getJSONObject(i).getInt("Status");
+                            if (tempStatus > 0) {
+                                status = true;
+                            } else {
+                                status = false;
+                            }
                             machine = new Device(machineID, longitude, latitude, status);
                         }
-
-
                     } else {
                         //TODO Show - jsonObj.getString("message")
-
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
-
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
-
         return machine;
     }
 
     // Метод забрать все девайсы из базы
-    //public String GetAllDevices() {
-    static public LinkedList<Device> GetAllDevices (){
+    public LinkedList<Device> GetAllDevices() {
         LinkedList<Device> devicesList = new LinkedList<>();
         BufferedReader stringToReciev;
-        //String result = "";
-        //Device machine;
-        String test = "";
         String link = "http://parkeon.alternatiview.com.ua/get_all_devices.php?";
         try {
             URL url = new URL(link);
@@ -89,7 +87,6 @@ public class DB_connect {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray device = jsonObject.getJSONArray("Device");
                     int query_result = jsonObject.getInt("success");
-                    //test = String.valueOf(device.length());
                     if (query_result > 0) {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
@@ -97,19 +94,17 @@ public class DB_connect {
                             Double latitude = device.getJSONObject(i).getDouble("Longitude");
                             Boolean status;
                             int tempStatus = device.getJSONObject(i).getInt("Status");
-                            if (tempStatus>0){
+                            if (tempStatus > 0) {
                                 status = true;
                             } else {
                                 status = false;
                             }
-                            devicesList.add(new Device(machineID, longitude, latitude,status ));
+                            devicesList.add(new Device(machineID, longitude, latitude, status));
                         }
-
                     } else {
                         //TODO Check if it's working.
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
-
                     }
                 } catch (JSONException e) {
                     //TODO Check if it's working
@@ -117,13 +112,43 @@ public class DB_connect {
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
-
-
         return devicesList;
+    }
+
+    // Создание временной таблиці в БД
+    public void CreateTempTable(String userID){
+        BufferedReader stringToReciev;
+
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/create_temp_table.php?tableName="+URLEncoder.encode(userID, "UTF-8");
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            stringToReciev = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReciev.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray device = jsonObject.getJSONArray("Device");
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0){
+
+                    }
+                    else{
+                        String res = jsonObject.getString("message");;
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (JSONException e){
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }catch (Exception e){
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
     }
 }
