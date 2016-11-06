@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     static EditText etSearchText;
     Device machine;
     String res;
-
+    //String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     private static RadioGroup radio_group;
-
+    DB_connect con = new DB_connect();
 
 
     @Override
@@ -40,17 +40,18 @@ public class MainActivity extends AppCompatActivity {
         onClickListenerButGoMap();
         onVeiwDetailed();
 
+
     }
 
     //Обработка события нажатия кнопки ViewDetailed
     public void onVeiwDetailed() {
-        DB_connect con = new DB_connect();
+        //DB_connect con = new DB_connect();
         btnAdvancedSearch = (Button)findViewById(R.id.btnAdvancedSearch);
         btnAdvancedSearch.setOnClickListener(
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        DB_connect con = new DB_connect();
+                        //DB_connect con = new DB_connect();
                         try {
                             //Toast.makeText(context, etSearchText.getText().toString(), Toast.LENGTH_LONG).show();
                             machine = con.GetDevice(etSearchText.getText().toString());
@@ -68,31 +69,35 @@ public class MainActivity extends AppCompatActivity {
 
     //Обработка кнопки Go Map для показа всех устройств
     public void onClickListenerButGoMap() {
+
         radio_group = (RadioGroup) findViewById(R.id.rgSelector);
         btnShowOnMap = (Button) findViewById(R.id.btnShowOnMap);
+
         btnShowOnMap.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //Magic workaround to get statements for Switch
+                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        con.CreateTempTable(androidID);
                         int selected_filter = radio_group.getCheckedRadioButtonId();
                         View rbt = radio_group.findViewById(selected_filter);
                         int rbtID = radio_group.indexOfChild(rbt);
                         RadioButton btn = (RadioButton) radio_group.getChildAt(rbtID);
                         String selectedTxt = (String) btn.getText();
-                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-                        DB_connect con = new DB_connect();
+                        LinkedList<Device> machinelist = new LinkedList<>();
                         switch (selectedTxt) {
                             case "Show all devices":
-                                //Toast.makeText(context, androidID, Toast.LENGTH_SHORT).show();
-                                con.CreateTempTable(androidID);
+                                machinelist = con.GetAllDevices();
+                                con.InsertToTempTable(androidID, machinelist);
                                 break;
                             case "Show Activated devices":
-                                con.DropTempTable(androidID);
-                                //Toast.makeText(context, selectedTxt, Toast.LENGTH_SHORT).show();
+                                machinelist = con.GetSelectedDevices(1);
+                                con.InsertToTempTable(androidID, machinelist);
                                 break;
                             case "Show non-Activated devices":
-                                Toast.makeText(context, selectedTxt, Toast.LENGTH_SHORT).show();
+                                machinelist = con.GetSelectedDevices(0);
+                                con.InsertToTempTable(androidID, machinelist);
                                 break;
                         }
                     }

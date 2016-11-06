@@ -8,7 +8,7 @@ public class Device {
     public String machineID;
     public double longitude;
     public double latitude;
-    public boolean status;
+    public int status;
 
     public Device(String machineID) {
         this.machineID = machineID;
@@ -18,10 +18,10 @@ public class Device {
         this.machineID = machineID;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.status = false;
+        this.status = 0;
     }
 
-    public Device(String machineID, double latitude, double longitude, boolean status) {
+    public Device(String machineID, double latitude, double longitude, int status) {
         this.machineID = machineID;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -33,7 +33,7 @@ public class Device {
         printResult[0] = device.machineID;
         printResult[1] = Double.toString(device.longitude);
         printResult[2] = Double.toString(device.latitude);
-        printResult[3] = Boolean.toString(device.status);
+        printResult[3] = Integer.toString(device.status);
 
         return printResult;
     }
