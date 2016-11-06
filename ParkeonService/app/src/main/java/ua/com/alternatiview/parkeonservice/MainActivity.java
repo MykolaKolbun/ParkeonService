@@ -81,13 +81,15 @@ public class MainActivity extends AppCompatActivity {
                         RadioButton btn = (RadioButton) radio_group.getChildAt(rbtID);
                         String selectedTxt = (String) btn.getText();
                         String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-
+                        DB_connect con = new DB_connect();
                         switch (selectedTxt) {
                             case "Show all devices":
-                                Toast.makeText(context, androidID, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, androidID, Toast.LENGTH_SHORT).show();
+                                con.CreateTempTable(androidID);
                                 break;
                             case "Show Activated devices":
-                                Toast.makeText(context, selectedTxt, Toast.LENGTH_SHORT).show();
+                                con.DropTempTable(androidID);
+                                //Toast.makeText(context, selectedTxt, Toast.LENGTH_SHORT).show();
                                 break;
                             case "Show non-Activated devices":
                                 Toast.makeText(context, selectedTxt, Toast.LENGTH_SHORT).show();
