@@ -40,22 +40,29 @@ public class MainActivity extends AppCompatActivity {
 
     //Обработка события нажатия кнопки ViewDetailed
     private void onVeiwDetailed() {
-        btnAdvancedSearch = (Button)findViewById(R.id.btnAdvancedSearch);
+        btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
         btnAdvancedSearch.setOnClickListener(
-                new View.OnClickListener(){
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
+                    public void onClick(View v) {
 
                         Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
                         String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                         con.CreateTempTable(androidID);
                         try {
                             machine = con.GetDevice(etSearchText.getText().toString());
-                            con.InsertToTempTable(androidID, machine.machineID);
-                            MainActivity.this.startActivity(myIntent);
+                            if (machine.longitude !=0 ) {
+                                con.InsertToTempTable(androidID, machine.machineID);
+                                MainActivity.this.startActivity(myIntent);
+                            }else {
+                                Toast.makeText(context, "Device not found in table", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                         } catch (Exception e) {
                             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                         }
+
+
                     }
 
                 }
@@ -102,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
+
     private void onClickListenerButViewDetailed() {
 
         btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);

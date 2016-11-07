@@ -54,16 +54,16 @@ public class DB_connect {
                     } else {
                         //TODO Show - jsonObj.getString("message")
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
-                    String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    //String res = "Error parsing JSON data.";
+                    //Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
         return machine;
     }
@@ -101,16 +101,16 @@ public class DB_connect {
                     } else {
                         //TODO Check if it's working.
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     //TODO Check if it's working
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
         return machineList;
@@ -149,16 +149,16 @@ public class DB_connect {
                     } else {
                         //TODO Check if it's working.
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     //TODO Check if it's working
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
         return devicesList;
     }
@@ -181,15 +181,15 @@ public class DB_connect {
                     }
                     else{
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e){
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         }catch (Exception e){
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -212,15 +212,15 @@ public class DB_connect {
                     }
                     else{
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e){
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         }catch (Exception e){
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -257,16 +257,16 @@ public class DB_connect {
                     } else {
                         //TODO Check if it's working.
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     //TODO Check if it's working
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
         return machineList;
@@ -288,20 +288,20 @@ public class DB_connect {
                         int query_result = jsonObject.getInt("success");
                         if (query_result > 0) {
                             //TODO something to show
-                            Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             String res = jsonObject.getString("message");
-                            Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                         }
                     }catch (JSONException e){
                         //TODO Show error "Error parsing JSON data."
                         String res = "Error parsing JSON data.";
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 }
             }catch (Exception e){
-                Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
             }
 
     }
@@ -322,20 +322,20 @@ public class DB_connect {
                     int query_result = jsonObject.getInt("success");
                     if (query_result > 0) {
                         //TODO something to show
-                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e){
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         }catch (Exception e){
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -356,20 +356,20 @@ public class DB_connect {
                     int query_result = jsonObject.getInt("success");
                     if (query_result > 0) {
                         //TODO something to show
-                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         String res = jsonObject.getString("message");
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
                 }catch (JSONException e){
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
-                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
         }catch (Exception e){
-            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
     }

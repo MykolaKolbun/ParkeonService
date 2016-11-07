@@ -20,11 +20,14 @@
         android:id="@+id/etSearchDeviceName"
         android:ems="10"
         android:hint="Type device name here..."
-        android:inputType="text"
         android:layout_x="10dp"
         android:layout_y="40dp"
         android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:inputType="number"
+        android:maxLength="8"/>
+
 
     <TextView
         android:id="@+id/textView4"
