@@ -20,10 +20,10 @@ public class ListingActivity extends AppCompatActivity {
 
          String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
          machineList = con.GetTempDevices(androidID);
-         textView.append(String.valueOf(machineList.size()));
-         //for (int i = 0; i<machineList.size(); i++){
-         //   textView.append("Latitude: "+machineList.get(i).latitude+'\n');
-         //}
+         textView.append("Amount - "+String.valueOf(machineList.size())+'\n');
+         for (int i = 0; i<machineList.size(); i++){
+             textView.append("Machine name: "+machineList.get(i).machineID+'\n');
+         }
         con.DropTempTable(androidID);
      }
 }
