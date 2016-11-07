@@ -1,11 +1,11 @@
-package ua.com.alternatiview.parkeonservice;
+package ua.com.alternatiview.parkeonmapservice;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
+
     static Context context;
     LinkedList<Device> machineList = new LinkedList<>();
     Button btnShowOnMap, btnAdvancedSearch, btnViewDetailed;
@@ -23,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     Device machine;
     private static RadioGroup radio_group;
     DB_connect con = new DB_connect();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         onVeiwDetailed();
         onClickListenerButViewDetailed();
     }
-
     //Обработка события нажатия кнопки ViewDetailed
     private void onVeiwDetailed() {
         btnAdvancedSearch = (Button)findViewById(R.id.btnAdvancedSearch);
@@ -139,5 +138,4 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
 }

@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Parkeon Service 2.0</string>
+    <string name="app_name">Parkeon map service</string>
     <string name="title_activity_maps">Map</string>
 </resources>

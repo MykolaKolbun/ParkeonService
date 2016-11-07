@@ -1,4 +1,4 @@
-package ua.com.alternatiview.parkeonservice;
+package ua.com.alternatiview.parkeonmapservice;
 
 import android.widget.Toast;
 
@@ -13,14 +13,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.LinkedList;
 
-
 /**
- * Created by Sorrow on 02.11.2016.
+ * Created by Sorrow on 07.11.2016.
  */
 
-
 public class DB_connect {
-
     //Метод взять данные определенного девайса из базы
     public Device GetDevice(String machineName) {
         BufferedReader stringToReceive;
@@ -274,35 +271,35 @@ public class DB_connect {
 
     // Заполнить временную таблицу
     public void InsertToTempTable(String userID, int status){
-            String addList = "TempTable="+userID+"&Status="+Integer.toString(status);
-            try{
-                String link = "http://parkeon.alternatiview.com.ua/insert_into_temp_table.php?" +addList;
-                URL url = new URL(link);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String result = stringToReceive.readLine();
-                if (result != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int query_result = jsonObject.getInt("success");
-                        if (query_result > 0) {
-                            //TODO something to show
-                            Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            String res = jsonObject.getString("message");
-                            Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
-                        }
-                    }catch (JSONException e){
-                        //TODO Show error "Error parsing JSON data."
-                        String res = "Error parsing JSON data.";
+        String addList = "TempTable="+userID+"&Status="+Integer.toString(status);
+        try{
+            String link = "http://parkeon.alternatiview.com.ua/insert_into_temp_table.php?" +addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
                     }
+                }catch (JSONException e){
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
                 }
-            }catch (Exception e){
-                Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
             }
+        }catch (Exception e){
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+        }
 
     }
 
