@@ -41,7 +41,7 @@ public class DB_connect {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
-                            Double latitude = device.getJSONObject(i).getDouble("Longitude");
+                            Double latitude = device.getJSONObject(i).getDouble("Latitude");
                             int status;
                             int tempStatus = device.getJSONObject(i).getInt("Status");
                             if (tempStatus > 0) {
@@ -73,7 +73,7 @@ public class DB_connect {
         LinkedList<Device> machineList = new LinkedList<>();
         BufferedReader stringToReciev;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/get_all_devices.php?Status="+URLEncoder.encode(Integer.toString(select), "UTF-8");
+            String link = "http://parkeon.alternatiview.com.ua/get_all_devices.php?Status="+String.valueOf(select);
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -88,7 +88,7 @@ public class DB_connect {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
-                            Double latitude = device.getJSONObject(i).getDouble("Longitude");
+                            Double latitude = device.getJSONObject(i).getDouble("Latitude");
                             int status;
                             int tempStatus = device.getJSONObject(i).getInt("Status");
                             if (tempStatus > 0) {
@@ -136,7 +136,7 @@ public class DB_connect {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
-                            Double latitude = device.getJSONObject(i).getDouble("Longitude");
+                            Double latitude = device.getJSONObject(i).getDouble("Latitude");
                             int status;
                             int tempStatus = device.getJSONObject(i).getInt("Status");
                             if (tempStatus > 0) {
@@ -196,9 +196,8 @@ public class DB_connect {
     // Удаление временной таблицы в БД
     public void DropTempTable(String userID){
         BufferedReader stringToReciev;
-
         try {
-            String link = "http://parkeon.alternatiview.com.ua/drop_temp_table.php?TableName="+URLEncoder.encode(userID, "UTF-8");
+            String link = "http://parkeon.alternatiview.com.ua/drop_temp_table.php?TableName="+userID;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -226,10 +225,10 @@ public class DB_connect {
     }
 
     // Забрать все данные из временной таблицы
-    LinkedList<Device> GetTempDevices(){
+    LinkedList<Device> GetTempDevices(String androidID){
         LinkedList<Device>machineList = new LinkedList<>();
         BufferedReader stringToReciev;
-        String link = "http://parkeon.alternatiview.com.ua/get_devices_temptable.php?";
+        String link = "http://parkeon.alternatiview.com.ua/get_devices_temp_table.php?TempTable="+androidID;
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -245,7 +244,7 @@ public class DB_connect {
                         for (int i = 0; i < device.length(); i++) {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
-                            Double latitude = device.getJSONObject(i).getDouble("Longitude");
+                            Double latitude = device.getJSONObject(i).getDouble("Latitude");
                             int status;
                             int tempStatus = device.getJSONObject(i).getInt("Status");
                             if (tempStatus > 0) {
@@ -274,12 +273,8 @@ public class DB_connect {
     }
 
     // Заполнить временную таблицу
-    public void InsertToTempTable(String userID, LinkedList<Device> machineList){
-        for (int i=0; i<machineList.size();i++){
-            String addList = "";
-
-            addList = "TempTable="+userID+"&Name="+machineList.get(i).machineID+"&Longitude="+Double.toString(machineList.get(i).longitude)
-                    +"&Latitude="+Double.toString(machineList.get(i).latitude)+"&Status="+Integer.toString(machineList.get(i).status);
+    public void InsertToTempTable(String userID, int status){
+            String addList = "TempTable="+userID+"&Status="+Integer.toString(status);
             try{
                 String link = "http://parkeon.alternatiview.com.ua/insert_into_temp_table.php?" +addList;
                 URL url = new URL(link);
@@ -293,7 +288,7 @@ public class DB_connect {
                         int query_result = jsonObject.getInt("success");
                         if (query_result > 0) {
                             //TODO something to show
-                            Toast.makeText(MainActivity.context, "Added", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
                         }
                         else {
                             String res = jsonObject.getString("message");
@@ -308,6 +303,74 @@ public class DB_connect {
             }catch (Exception e){
                 Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
             }
+
+    }
+
+    // Заполнить временную таблицу
+    public void InsertToTempTable(String userID){
+        String addList = "TempTable="+userID;
+        try{
+            String link = "http://parkeon.alternatiview.com.ua/insert_all_into_temp_table.php?" +addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReciev = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReciev.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    }
+                }catch (JSONException e){
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    // Заполнить временную таблицу
+    public void InsertToTempTable(String userID, String machineName){
+        String addList = "TempTable="+userID+"&Name="+machineName;
+        try{
+            String link = "http://parkeon.alternatiview.com.ua/insert_one_into_temp_table.php?" +addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReciev = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReciev.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                    }
+                }catch (JSONException e){
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_LONG).show();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package ua.com.alternatiview.parkeonservice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -17,11 +18,9 @@ import java.util.LinkedList;
 public class MainActivity extends AppCompatActivity {
     static Context context;
     LinkedList<Device> machineList = new LinkedList<>();
-    Button btnShowOnMap, btnViewDetailed, btnAdvancedSearch;
+    Button btnShowOnMap, btnAdvancedSearch, btnViewDetailed;
     static EditText etSearchText;
     Device machine;
-    String res;
-    //String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     private static RadioGroup radio_group;
     DB_connect con = new DB_connect();
 
@@ -32,35 +31,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        //btnShowOnMap = (Button) findViewById(R.id.btnShowOnMap);
-        //btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);
-        //btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
         etSearchText = (EditText) findViewById(R.id.etSearchDeviceName);
         context = getApplicationContext();
         onClickListenerButGoMap();
         onVeiwDetailed();
-
-
+        onClickListenerButViewDetailed();
     }
 
     //Обработка события нажатия кнопки ViewDetailed
     public void onVeiwDetailed() {
-        //DB_connect con = new DB_connect();
         btnAdvancedSearch = (Button)findViewById(R.id.btnAdvancedSearch);
         btnAdvancedSearch.setOnClickListener(
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        //DB_connect con = new DB_connect();
+
+                        Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
+                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        con.CreateTempTable(androidID);
                         try {
-                            //Toast.makeText(context, etSearchText.getText().toString(), Toast.LENGTH_LONG).show();
                             machine = con.GetDevice(etSearchText.getText().toString());
+                            con.InsertToTempTable(androidID, machine.machineID);
+                            MainActivity.this.startActivity(myIntent);
                         } catch (Exception e) {
                             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(context, String.valueOf(machine.latitude), Toast.LENGTH_LONG).show();
-                        //Intent listingLayout = new Intent(MainActivity.context, ListingActivity.class);
-                        //startActivity(listingLayout);
                     }
 
                 }
@@ -85,25 +80,64 @@ public class MainActivity extends AppCompatActivity {
                         int rbtID = radio_group.indexOfChild(rbt);
                         RadioButton btn = (RadioButton) radio_group.getChildAt(rbtID);
                         String selectedTxt = (String) btn.getText();
-                        LinkedList<Device> machinelist = new LinkedList<>();
+                        Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
                         switch (selectedTxt) {
                             case "Show all devices":
-                                machinelist = con.GetAllDevices();
-                                con.InsertToTempTable(androidID, machinelist);
+                                machineList = con.GetAllDevices();
+                                con.InsertToTempTable(androidID);
+                                MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show Activated devices":
-                                machinelist = con.GetSelectedDevices(1);
-                                con.InsertToTempTable(androidID, machinelist);
+                                machineList = con.GetSelectedDevices(1);
+                                con.InsertToTempTable(androidID, 1);
+                                MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show non-Activated devices":
-                                machinelist = con.GetSelectedDevices(0);
-                                con.InsertToTempTable(androidID, machinelist);
+                                machineList = con.GetSelectedDevices(0);
+                                con.InsertToTempTable(androidID, 0);
+                                MainActivity.this.startActivity(myIntent);
                                 break;
                         }
                     }
                 }
         );
     }
+    public void onClickListenerButViewDetailed() {
 
+        btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);
+
+        btnViewDetailed.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent myIntent = new Intent(MainActivity.context, ListingActivity.class);
+                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        con.CreateTempTable(androidID);
+                        int selected_filter = radio_group.getCheckedRadioButtonId();
+                        View rbt = radio_group.findViewById(selected_filter);
+                        int rbtID = radio_group.indexOfChild(rbt);
+                        RadioButton btn = (RadioButton) radio_group.getChildAt(rbtID);
+                        String selectedTxt = (String) btn.getText();
+                        switch (selectedTxt) {
+                            case "Show all devices":
+                                machineList = con.GetAllDevices();
+                                con.InsertToTempTable(androidID);
+                                MainActivity.this.startActivity(myIntent);
+                                break;
+                            case "Show Activated devices":
+                                machineList = con.GetSelectedDevices(1);
+                                con.InsertToTempTable(androidID, 1);
+                                MainActivity.this.startActivity(myIntent);
+                                break;
+                            case "Show non-Activated devices":
+                                machineList = con.GetSelectedDevices(0);
+                                con.InsertToTempTable(androidID, 0);
+                                MainActivity.this.startActivity(myIntent);
+                                break;
+                        }
+                    }
+                }
+        );
+    }
 
 }
