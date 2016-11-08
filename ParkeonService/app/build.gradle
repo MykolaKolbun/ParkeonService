@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'SorrowAndroidSign'
+            keyPassword 'Passw0rd'
+            storeFile file('D:/Alternatiview/Android/ParkeonService.jks')
+            storePassword 'Passw0rd'
+        }
+        SorrowConfig {
+            keyAlias 'SorrowAndroidSign'
+            keyPassword 'Passw0rd'
+            storeFile file('D:/Alternatiview/Android/SorrowAndroidKey.jks')
+            storePassword 'Passw0rd'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
     defaultConfig {
@@ -12,10 +26,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         useLibrary 'org.apache.http.legacy'
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            debuggable true
+        }
+        debug {
+            signingConfig signingConfigs.config
+            debuggable false
         }
     }
     productFlavors {
