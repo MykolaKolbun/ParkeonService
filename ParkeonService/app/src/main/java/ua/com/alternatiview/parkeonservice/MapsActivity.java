@@ -8,7 +8,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,19 +53,22 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
             LatLng point = new LatLng(machinesList.get(i).latitude, machinesList.get(i).longitude);
             Marker m;
             if (machinesList.get(i).status==1) {
-                m=mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID))
+                m=mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Activated")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).draggable(true));
                 m.setTag(0);
+                m.showInfoWindow();
             } else {
                 if(machinesList.get(i).status==9){
-                    m=mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID))
+                    m=mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Defective")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
                     m.setTag(0);
                     m.setDraggable(isDraggable);
+                    m.showInfoWindow();
                 }else {
-                    m = mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)));
+                    m = mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Not Activated"));
                     m.setTag(0);
                     m.setDraggable(isDraggable);
+                    m.showInfoWindow();
                 }
             }
         }
@@ -80,6 +82,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerDragListener(this);
+        mMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
@@ -100,30 +103,42 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        ChangeStatus(marker);
+        ChangeLocation(marker);
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this,"!!!",Toast.LENGTH_LONG).show();
+        ChangeStatus(marker);
     }
 
-
+    //Обработка события клик на инфоокно - изменение статуса девайса
     private void ChangeStatus(final Marker marker){
         dialogChangeStatus = new AlertDialog.Builder(this);
 
-        final String[] strStatus = {"Activated", "NotActivated"};
+        final String[] strStatus = {"NotActivated", "Activated", "Defective", "Delete"};
         dialogChangeStatus.setTitle("Choose status for device");
-        dialogChangeStatus.setSingleChoiceItems(strStatus, 1, new DialogInterface.OnClickListener() {
+        dialogChangeStatus.setSingleChoiceItems(strStatus, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String status = strStatus[which];
                 switch (status) {
-                    case "Activated": intStatus = 4;
+                    case "Activated": intStatus = 1;
+                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        marker.setSnippet("Activated");
                         break;
-                    case "NotActivated": intStatus = 5;
+                    case "NotActivated": intStatus = 0;
+                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        marker.setSnippet("Not Activated");
                         break;
+                    case "Defective":intStatus = 9;
+                        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                        marker.setSnippet("Defective");
+                        break;
+                    case "Delete": {
+                        intStatus=10;
+                        //TODO Create methot to delete device with additional confirmation
 
+                    }
                 }
 
             }
@@ -132,8 +147,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         dialogChangeStatus.setPositiveButton("SET", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DB_connect con = new DB_connect();
-                con.UpdateStatus(String.valueOf(marker.getTitle()), intStatus);
+                if(intStatus<10) {
+                    DB_connect con = new DB_connect();
+                    con.UpdateStatus(String.valueOf(marker.getTitle()), intStatus);
+                }else {
+                    DeleteDevice(marker);
+                    //Toast.makeText(this,"))))",Toast.LENGTH_LONG);
+                    //Toast.makeText(MapsActivity.this,String.valueOf(marker.getTitle()), Toast.LENGTH_LONG).show();
+                }
             }
         });
         dialogChangeStatus.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -146,4 +167,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         AlertDialog dialogStatusChange = dialogChangeStatus.create();
         dialogStatusChange.show();
     }
+
+    // Событие перетаскивания маркера
+    private void ChangeLocation(final Marker marker){
+        DB_connect con = new DB_connect();
+        con.UpdateLocation(String.copyValueOf(marker.getTitle().toCharArray()),marker.getPosition().latitude, marker.getPosition().longitude);
+    }
+    private void DeleteDevice(final  Marker marker){
+        DB_connect con = new DB_connect();
+        con.DeleteDevice(String.valueOf(marker.getTitle()));
+        //Toast.makeText(this,String.valueOf(marker.getTitle()),Toast.LENGTH_LONG);
+
+    }
+
 }

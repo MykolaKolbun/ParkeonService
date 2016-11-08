@@ -366,7 +366,7 @@ public class DB_connect {
                     int query_result = jsonObject.getInt("success");
                     if (query_result > 0) {
                         //TODO something to show
-                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.context, "New machine successfully added", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         String res = jsonObject.getString("message");
@@ -432,7 +432,38 @@ public class DB_connect {
                     int query_result = jsonObject.getInt("success");
                     if (query_result > 0) {
                         //TODO something to show
-                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.context, "Location updated", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (JSONException e){
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void DeleteDevice(String machineName){
+        String addList = "Name="+machineName;
+        try{
+            String link = "http://parkeon.alternatiview.com.ua/delete_device.php?" +addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "Machine deleted", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         String res = jsonObject.getString("message");
