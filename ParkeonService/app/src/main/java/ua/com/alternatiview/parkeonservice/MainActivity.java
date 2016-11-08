@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private static RadioGroup radio_group;
     DB_connect con = new DB_connect();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,28 +40,26 @@ public class MainActivity extends AppCompatActivity {
     //Обработка события нажатия кнопки ViewDetailed
     private void onVeiwDetailed() {
         btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
+
         btnAdvancedSearch.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
                         String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                         con.CreateTempTable(androidID);
                         try {
                             machine = con.GetDevice(etSearchText.getText().toString());
-                            if (machine.longitude !=0 ) {
+                            if (machine.longitude != 0) {
                                 con.InsertToTempTable(androidID, machine.machineID);
                                 MainActivity.this.startActivity(myIntent);
-                            }else {
+                            } else {
                                 Toast.makeText(context, "Device not found in table", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } catch (Exception e) {
                             Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
 
                 }
@@ -71,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Обработка кнопки Go Map для показа всех устройств
     private void onClickListenerButGoMap() {
-
         radio_group = (RadioGroup) findViewById(R.id.rgSelector);
         btnShowOnMap = (Button) findViewById(R.id.btnShowOnMap);
 
@@ -111,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onClickListenerButViewDetailed() {
-
         btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);
 
         btnViewDetailed.setOnClickListener(
@@ -147,5 +142,4 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
 }

@@ -42,7 +42,7 @@ public class DB_connect {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Latitude");
-                            int status=device.getJSONObject(i).getInt("Status");
+                            int status = device.getJSONObject(i).getInt("Status");
                             machine = new Device(machineID, longitude, latitude, status);
                         }
                     } else {
@@ -63,11 +63,11 @@ public class DB_connect {
     }
 
     //Метод собрать девайсы по критерию Status
-    public LinkedList<Device> GetSelectedDevices(int select){
+    public LinkedList<Device> GetSelectedDevices(int select) {
         LinkedList<Device> machineList = new LinkedList<>();
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/get_all_devices.php?Status="+String.valueOf(select);
+            String link = "http://parkeon.alternatiview.com.ua/get_all_devices.php?Status=" + String.valueOf(select);
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -83,7 +83,7 @@ public class DB_connect {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Latitude");
-                            int status=device.getJSONObject(i).getInt("Status");
+                            int status = device.getJSONObject(i).getInt("Status");
                             machineList.add(new Device(machineID, longitude, latitude, status));
                         }
                     } else {
@@ -125,7 +125,7 @@ public class DB_connect {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Latitude");
-                            int status=device.getJSONObject(i).getInt("Status");
+                            int status = device.getJSONObject(i).getInt("Status");
                             devicesList.add(new Device(machineID, longitude, latitude, status));
                         }
                     } else {
@@ -146,10 +146,10 @@ public class DB_connect {
     }
 
     // Создание временной таблицы в БД
-    public void CreateTempTable(String userID){
+    public void CreateTempTable(String userID) {
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/create_temp_table.php?TableName="+URLEncoder.encode(userID, "UTF-8");
+            String link = "http://parkeon.alternatiview.com.ua/create_temp_table.php?TableName=" + URLEncoder.encode(userID, "UTF-8");
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -159,27 +159,26 @@ public class DB_connect {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     int query_result = jsonObject.getInt("success");
-                    if (query_result > 0){
-                    }
-                    else{
+                    if (query_result > 0) {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
     // Удаление временной таблицы в БД
-    public void DropTempTable(String userID){
+    public void DropTempTable(String userID) {
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/drop_temp_table.php?TableName="+userID;
+            String link = "http://parkeon.alternatiview.com.ua/drop_temp_table.php?TableName=" + userID;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -189,28 +188,27 @@ public class DB_connect {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     int query_result = jsonObject.getInt("success");
-                    if (query_result > 0){
+                    if (query_result > 0) {
 
-                    }
-                    else{
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
     // Забрать все данные из временной таблицы
-    LinkedList<Device> GetTempDevices(String androidID){
-        LinkedList<Device>machineList = new LinkedList<>();
+    LinkedList<Device> GetTempDevices(String androidID) {
+        LinkedList<Device> machineList = new LinkedList<>();
         BufferedReader stringToReceive;
-        String link = "http://parkeon.alternatiview.com.ua/get_devices_temp_table.php?TempTable="+androidID;
+        String link = "http://parkeon.alternatiview.com.ua/get_devices_temp_table.php?TempTable=" + androidID;
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -227,7 +225,7 @@ public class DB_connect {
                             String machineID = device.getJSONObject(i).getString("Name");
                             Double longitude = device.getJSONObject(i).getDouble("Longitude");
                             Double latitude = device.getJSONObject(i).getDouble("Latitude");
-                            int status=device.getJSONObject(i).getInt("Status");
+                            int status = device.getJSONObject(i).getInt("Status");
                             machineList.add(new Device(machineID, longitude, latitude, status));
                         }
                     } else {
@@ -249,44 +247,10 @@ public class DB_connect {
     }
 
     // Заполнить временную таблицу
-    public void InsertToTempTable(String userID, int status){
-            String addList = "TempTable="+userID+"&Status="+Integer.toString(status);
-            try{
-                String link = "http://parkeon.alternatiview.com.ua/insert_into_temp_table.php?" +addList;
-                URL url = new URL(link);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String result = stringToReceive.readLine();
-                if (result != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        int query_result = jsonObject.getInt("success");
-                        if (query_result > 0) {
-                            //TODO something to show
-                            Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            String res = jsonObject.getString("message");
-                            Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
-                        }
-                    }catch (JSONException e){
-                        //TODO Show error "Error parsing JSON data."
-                        String res = "Error parsing JSON data.";
-                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }catch (Exception e){
-                Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
-            }
-
-    }
-
-    // Заполнить временную таблицу, перегруженый
-    public void InsertToTempTable(String userID){
-        String addList = "TempTable="+userID;
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/insert_all_into_temp_table.php?" +addList;
+    public void InsertToTempTable(String userID, int status) {
+        String addList = "TempTable=" + userID + "&Status=" + Integer.toString(status);
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/insert_into_temp_table.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -299,28 +263,27 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
     }
 
     // Заполнить временную таблицу, перегруженый
-    public void InsertToTempTable(String userID, String machineName){
-        String addList = "TempTable="+userID+"&Name="+machineName;
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/insert_one_into_temp_table.php?" +addList;
+    public void InsertToTempTable(String userID) {
+        String addList = "TempTable=" + userID;
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/insert_all_into_temp_table.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -333,28 +296,60 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    // Заполнить временную таблицу, перегруженый
+    public void InsertToTempTable(String userID, String machineName) {
+        String addList = "TempTable=" + userID + "&Name=" + machineName;
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/insert_one_into_temp_table.php?" + addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
 
     }
 
     // Добавить новый девайс в основную таблицу
-    public void InsertNewDevice(Device machine){
-        String addList = "Name="+machine.machineID+"&Longitude="+String.valueOf(machine.longitude)+"&Latitude="+String.valueOf(machine.latitude)+"&Status="+String.valueOf(machine.status);
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/create_new_device.php?" +addList;
+    public void InsertNewDevice(Device machine) {
+        String addList = "Name=" + machine.machineID + "&Longitude=" + String.valueOf(machine.longitude) + "&Latitude=" + String.valueOf(machine.latitude) + "&Status=" + String.valueOf(machine.status);
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/create_new_device.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -367,27 +362,26 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "New machine successfully added", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
     //Обновить статус девайса
-    public void UpdateStatus(String machineName, int status){
-        String addList = "Name="+machineName+"&Status="+String.valueOf(status);
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/update_device_status.php?" +addList;
+    public void UpdateStatus(String machineName, int status) {
+        String addList = "Name=" + machineName + "&Status=" + String.valueOf(status);
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/update_device_status.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -400,27 +394,26 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "success", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
 
     //Обновить координаты девайса
-    public void UpdateLocation(String machineName, Double longitude, Double latitude){
-        String addList = "Name="+machineName+"&Longitude="+String.valueOf(longitude)+"&Latitude="+String.valueOf(latitude);
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/update_device_location.php?" +addList;
+    public void UpdateLocation(String machineName, Double longitude, Double latitude) {
+        String addList = "Name=" + machineName + "&Longitude=" + String.valueOf(longitude) + "&Latitude=" + String.valueOf(latitude);
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/update_device_location.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -433,25 +426,25 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "Location updated", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
-    public void DeleteDevice(String machineName){
-        String addList = "Name="+machineName;
-        try{
-            String link = "http://parkeon.alternatiview.com.ua/delete_device.php?" +addList;
+
+    public void DeleteDevice(String machineName) {
+        String addList = "Name=" + machineName;
+        try {
+            String link = "http://parkeon.alternatiview.com.ua/delete_device.php?" + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -464,18 +457,17 @@ public class DB_connect {
                     if (query_result > 0) {
                         //TODO something to show
                         Toast.makeText(MainActivity.context, "Machine deleted", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         String res = jsonObject.getString("message");
                         Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     //TODO Show error "Error parsing JSON data."
                     String res = "Error parsing JSON data.";
                     Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
