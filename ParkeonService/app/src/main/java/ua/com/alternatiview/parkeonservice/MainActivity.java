@@ -2,7 +2,6 @@ package ua.com.alternatiview.parkeonservice;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -29,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         etSearchText = (EditText) findViewById(R.id.etSearchDeviceName);
@@ -144,5 +142,4 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
 }

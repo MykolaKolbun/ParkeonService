@@ -2,7 +2,6 @@ package ua.com.alternatiview.parkeonservice;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -34,7 +33,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -49,8 +47,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        con.DropTempTable(androidID);
         LatLng startPoint = new LatLng(machinesList.get(0).latitude, machinesList.get(0).longitude);
+        con.DropTempTable(androidID);
         for (int i = 0; i < machinesList.size(); i++) {
             LatLng point = new LatLng(machinesList.get(i).latitude, machinesList.get(i).longitude);
             Marker m;
@@ -193,5 +191,4 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         DB_connect con = new DB_connect();
         con.DeleteDevice(String.valueOf(marker.getTitle()));
     }
-
 }
