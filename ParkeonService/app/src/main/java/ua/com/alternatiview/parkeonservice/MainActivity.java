@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             machine = con.GetDevice(etSearchText.getText().toString());
                             if (machine.longitude != 0) {
-                                con.InsertToTempTable(androidID, machine.machineID);
+                                con.InsertToTempTable(androidID, etSearchText.getText().toString());
                                 MainActivity.this.startActivity(myIntent);
                             } else {
                                 Toast.makeText(context, "Device not found in table", Toast.LENGTH_SHORT).show();
@@ -86,17 +86,14 @@ public class MainActivity extends AppCompatActivity {
                         Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
                         switch (selectedTxt) {
                             case "Show all devices":
-                                machineList = con.GetAllDevices();
                                 con.InsertToTempTable(androidID);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show Activated devices":
-                                machineList = con.GetSelectedDevices(1);
                                 con.InsertToTempTable(androidID, 1);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show non-Activated devices":
-                                machineList = con.GetSelectedDevices(0);
                                 con.InsertToTempTable(androidID, 0);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
@@ -123,17 +120,14 @@ public class MainActivity extends AppCompatActivity {
                         String selectedTxt = (String) btn.getText();
                         switch (selectedTxt) {
                             case "Show all devices":
-                                machineList = con.GetAllDevices();
                                 con.InsertToTempTable(androidID);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show Activated devices":
-                                machineList = con.GetSelectedDevices(1);
                                 con.InsertToTempTable(androidID, 1);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
                             case "Show non-Activated devices":
-                                machineList = con.GetSelectedDevices(0);
                                 con.InsertToTempTable(androidID, 0);
                                 MainActivity.this.startActivity(myIntent);
                                 break;
