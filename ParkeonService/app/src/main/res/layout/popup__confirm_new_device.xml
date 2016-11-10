@@ -27,19 +27,6 @@
         android:textSize="17sp"
         android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/etMachineName"
-        android:hint="Machine number..."
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-        android:maxLength="8"
-        android:textColor="?android:attr/editTextColor" />
-
     <Button
         android:text="Ok"
         android:layout_width="wrap_content"
@@ -47,6 +34,19 @@
         android:id="@+id/btnOk"
         android:layout_marginTop="46dp"
         android:layout_below="@+id/etMachineName"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/etMachineName"
+        android:hint="Machine number..."
+        android:maxLength="8"
+        android:textColor="?android:attr/editTextColor"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
