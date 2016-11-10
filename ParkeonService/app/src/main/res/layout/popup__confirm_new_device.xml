@@ -38,7 +38,7 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"
         android:maxLength="8"
-        android:textColor="?android:attr/colorBackground" />
+        android:textColor="?android:attr/editTextColor" />
 
     <Button
         android:text="Ok"
