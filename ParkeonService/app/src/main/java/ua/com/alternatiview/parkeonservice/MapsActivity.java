@@ -2,6 +2,7 @@ package ua.com.alternatiview.parkeonservice;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -34,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -131,6 +133,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
                         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         marker.setSnippet("Not Activated");
                         break;
+                    case "Move to storage":
+                        intStatus = 8;
+
                     case "Defective":
                         intStatus = 9;
                         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));

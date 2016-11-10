@@ -1,5 +1,6 @@
 package ua.com.alternatiview.parkeonservice;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ public class ListingActivity extends AppCompatActivity {
         LinkedList<Device> machineList = new LinkedList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         DB_connect con = new DB_connect();
         TextView textView = (TextView) findViewById(R.id.txtOutputString);
         String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);

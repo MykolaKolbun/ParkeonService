@@ -471,4 +471,16 @@ public class DB_connect {
             Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void MoveToStock(String machineName){
+
+    }
+
+    public void GetFromStock(String machineName){
+
+    }
+
+    public void MoveToOnField(String machineName){
+
+    }
 }
