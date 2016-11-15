@@ -26,7 +26,7 @@ public class DB_connect {
         BufferedReader stringToReceive;
         Device machine = new Device(machineName);
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/get_device.php?name=" + URLEncoder.encode(machineName, "UTF-8");
+            String link = MainActivity.context.getString(R.string.linkGetDevice) + URLEncoder.encode(machineName, "UTF-8");
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -67,7 +67,7 @@ public class DB_connect {
         LinkedList<Device> machineList = new LinkedList<>();
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/get_all_devices.php?Status=" + String.valueOf(select);
+            String link = MainActivity.context.getString(R.string.linkGetAllDevicesWithStatus) + String.valueOf(select);
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -108,7 +108,7 @@ public class DB_connect {
     public LinkedList<Device> GetAllDevices() {
         LinkedList<Device> devicesList = new LinkedList<>();
         BufferedReader stringToReceive;
-        String link = "http://parkeon.alternatiview.com.ua/backoffice/get_all_devices.php?";
+        String link = MainActivity.context.getString(R.string.linkGeAllDevices);
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -149,7 +149,7 @@ public class DB_connect {
     public void CreateTempTable(String userID) {
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/create_temp_table.php?TableName=" + URLEncoder.encode(userID, "UTF-8");
+            String link = MainActivity.context.getString(R.string.linkCreateTempTable) + URLEncoder.encode(userID, "UTF-8");
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -178,7 +178,7 @@ public class DB_connect {
     public void DropTempTable(String userID) {
         BufferedReader stringToReceive;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/drop_temp_table.php?TableName=" + userID;
+            String link = MainActivity.context.getString(R.string.linkDropTempTable) + userID;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -208,7 +208,7 @@ public class DB_connect {
     LinkedList<Device> GetTempDevices(String androidID) {
         LinkedList<Device> machineList = new LinkedList<>();
         BufferedReader stringToReceive;
-        String link = "http://parkeon.alternatiview.com.ua/backoffice/get_devices_temp_table.php?TempTable=" + androidID;
+        String link = MainActivity.context.getString(R.string.linkGetDevicesFromTempTable) + androidID;
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -250,7 +250,7 @@ public class DB_connect {
     public void InsertToTempTable(String userID, int status) {
         String addList = "TempTable=" + userID + "&Status=" + Integer.toString(status);
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/insert_into_temp_table.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkInsertIntoTempTable) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -283,7 +283,7 @@ public class DB_connect {
     public void InsertToTempTable(String userID) {
         String addList = "TempTable=" + userID;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/insert_all_into_temp_table.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkInsertAllDevicesIntoTempTable) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -316,7 +316,7 @@ public class DB_connect {
     public void InsertToTempTable(String userID, String machineName) {
         String addList = "TempTable=" + userID + "&Name=" + machineName;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/insert_one_into_temp_table.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkInsertOneDeviceIntoTempTable) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -349,7 +349,7 @@ public class DB_connect {
     public void InsertNewDevice(Device machine) {
         String addList = "Name=" + machine.machineID + "&Longitude=" + String.valueOf(machine.longitude) + "&Latitude=" + String.valueOf(machine.latitude) + "&Status=" + String.valueOf(machine.status);
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/create_new_device.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkCreateNewDevice) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -381,7 +381,7 @@ public class DB_connect {
     public void UpdateStatus(String machineName, int status) {
         String addList = "Name=" + machineName + "&Status=" + String.valueOf(status);
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/update_device_status.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkUpdateDeviceStatus) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -413,7 +413,7 @@ public class DB_connect {
     public void UpdateLocation(String machineName, Double longitude, Double latitude) {
         String addList = "Name=" + machineName + "&Longitude=" + String.valueOf(longitude) + "&Latitude=" + String.valueOf(latitude);
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/update_device_location.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkUpdateDeviceLocation) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -444,7 +444,7 @@ public class DB_connect {
     public void DeleteDevice(String machineName) {
         String addList = "Name=" + machineName;
         try {
-            String link = "http://parkeon.alternatiview.com.ua/backoffice/delete_device.php?" + addList;
+            String link = MainActivity.context.getString(R.string.linkDeleteDevice) + addList;
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -473,14 +473,130 @@ public class DB_connect {
     }
 
     public void MoveToStock(String machineName){
+        String addList = "Name=" + machineName;
+        try {
+            String linkStorage = MainActivity.context.getString(R.string.linkMoveToStorage) + addList;
+            String linkOnField = MainActivity.context.getString(R.string.linkDeleteDevice) + addList;
+            URL url = new URL(linkStorage);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "Machine moved to storage.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
+            url = new URL(linkOnField);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, "Machine deleted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
 
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void GetFromStock(String machineName){
 
     }
 
-    public void MoveToOnField(String machineName){
+    public void MoveToOnField(String machineName, Double longitude, Double latitude){
+        String addList =  "Name=" + machineName + "&Longitude=" + String.valueOf(latitude) + "&Latitude=" + String.valueOf(longitude);
+        try {
+            String link = MainActivity.context.getString(R.string.linkMoveToOnfield) + addList;
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        //TODO something to show
+                        Toast.makeText(MainActivity.context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //TODO Show error "Error parsing JSON data."
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
+    }
 
+
+    public  LinkedList<String> GetDevicesFromStorage(){
+        BufferedReader stringToReceive;
+        LinkedList<String> list = new LinkedList<>();
+        String link = MainActivity.context.getString(R.string.linkGetDevicesFromStorage);
+        try {
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            stringToReceive = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result = stringToReceive.readLine();
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray device = jsonObject.getJSONArray("Device");
+                    int query_result = jsonObject.getInt("success");
+                    if (query_result > 0) {
+                        for (int i = 0; i < device.length(); i++) {
+                            String machineID = device.getJSONObject(i).getString("Name");
+                            list.add(machineID);
+                        }
+                    } else {
+                        //TODO Check if it's working.
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //TODO Check if it's working
+                    String res = "Error parsing JSON data.";
+                    Toast.makeText(MainActivity.context, res, Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.context, String.valueOf(e), Toast.LENGTH_SHORT).show();
+        }
+        return list;
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
     android:background="@color/common_google_signin_btn_text_dark_default">
 
     <TextView
-        android:text="Confirm creating new Device "
+        android:text="@string/strConfirmNewDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
@@ -25,10 +25,12 @@
         android:layout_marginTop="27dp"
         android:id="@+id/textView2"
         android:textSize="17sp"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_marginLeft="24dp" />
 
     <Button
-        android:text="Ok"
+        android:text="@string/strOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnOk"
@@ -42,7 +44,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/etMachineName"
-        android:hint="Machine number..."
+        android:hint="@string/strHintMachineName"
         android:maxLength="8"
         android:textColor="?android:attr/editTextColor"
         android:layout_alignBaseline="@+id/textView2"

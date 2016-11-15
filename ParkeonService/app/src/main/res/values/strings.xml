@@ -1,4 +1,40 @@
 <resources>
     <string name="app_name">Parkeon Service 2.0</string>
     <string name="title_activity_maps">Map</string>
+    // Links to Database
+    <string name="linkGetDevice">"http://parkeon.alternatiview.com.ua/backoffice/get_device.php?name="</string>
+    <string name="linkGetAllDevicesWithStatus">http://parkeon.alternatiview.com.ua/backoffice/get_all_devices.php?Status=</string>
+    <string name="linkGeAllDevices">http://parkeon.alternatiview.com.ua/backoffice/get_all_devices.php?</string>
+    <string name="linkCreateTempTable">http://parkeon.alternatiview.com.ua/backoffice/create_temp_table.php?TableName=</string>
+    <string name="linkDropTempTable">http://parkeon.alternatiview.com.ua/backoffice/drop_temp_table.php?TableName=</string>
+    <string name="linkGetDevicesFromTempTable">http://parkeon.alternatiview.com.ua/backoffice/get_devices_temp_table.php?TempTable=</string>
+    <string name="linkInsertIntoTempTable">http://parkeon.alternatiview.com.ua/backoffice/insert_into_temp_table.php?</string>
+    <string name="linkInsertAllDevicesIntoTempTable">http://parkeon.alternatiview.com.ua/backoffice/insert_all_into_temp_table.php?</string>
+    <string name="linkInsertOneDeviceIntoTempTable">http://parkeon.alternatiview.com.ua/backoffice/insert_one_into_temp_table.php?</string>
+    <string name="linkCreateNewDevice">http://parkeon.alternatiview.com.ua/backoffice/create_new_device.php?</string>
+    <string name="linkUpdateDeviceStatus">http://parkeon.alternatiview.com.ua/backoffice/update_device_status.php?</string>
+    <string name="linkUpdateDeviceLocation">http://parkeon.alternatiview.com.ua/backoffice/update_device_location.php?</string>
+    <string name="linkDeleteDevice">http://parkeon.alternatiview.com.ua/backoffice/delete_device.php?</string>
+    <string name="linkMoveToStorage">http://parkeon.alternatiview.com.ua/backoffice/move_to_storage.php?</string>
+    <string name="linkGetDevicesFromStorage">http://parkeon.alternatiview.com.ua/backoffice/get_from_storage.php</string>
+    <string name="linkMoveToOnfield">http://parkeon.alternatiview.com.ua/backoffice/move_to_onfield.php?</string>
+
+    //Main Activity strings
+    <string name="strSearchDevice">Search device:</string>
+    <string name="strHintSearchDevice">Type device name here...</string>
+    <string name="strGoMap">Go Map</string>
+    <string name="strShowAllDevices">Show all devices</string>
+    <string name="strShowActivatedDevices">Show Activated devices</string>
+    <string name="strShowNonActivatedDevices">Show non-Activated devices</string>
+    <string name="strViewDetailed">View detailed</string>
+    //Confirm new device strings
+    <string name="strConfirmNewDevice">Confirm creating new Device</string>
+    <string name="strHintMachineName">Machine number...</string>
+    <string name="strOk">Ok</string>
+    //Select from Storage activity
+    <string name="strDevicesOnStock">Devices in storage</string>
+    <string name="strHintSelectYouDevice">Select device from the list</string>
+    <string name="strSelect">Place on map</string>
+
+
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:text="Create new Device or Pick from the storage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TextView1"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Pick From Storage"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFromStorage"
+        android:layout_alignBottom="@+id/btnCreateNew"
+        android:layout_alignRight="@+id/TextView1"
+        android:layout_alignEnd="@+id/TextView1"
+        android:layout_width="120dp" />
+
+    <Button
+        android:text="Create new machine"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:id="@+id/btnCreateNew"
+        android:layout_below="@+id/TextView1"
+        android:layout_alignLeft="@+id/TextView1"
+        android:layout_alignStart="@+id/TextView1"
+        android:layout_width="120dp" />
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package ua.com.alternatiview.parkeonservice;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -14,16 +15,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.util.LinkedList;
-
 public class MainActivity extends AppCompatActivity {
+    private EditText etSearchText;
+    private Device machine;
+    private RadioGroup radio_group;
+    private final DB_connect con = new DB_connect();
     static Context context;
-    LinkedList<Device> machineList = new LinkedList<>();
-    Button btnShowOnMap, btnAdvancedSearch, btnViewDetailed;
-    static EditText etSearchText;
-    Device machine;
-    private static RadioGroup radio_group;
-    DB_connect con = new DB_connect();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +32,20 @@ public class MainActivity extends AppCompatActivity {
         etSearchText = (EditText) findViewById(R.id.etSearchDeviceName);
         context = getApplicationContext();
         onClickListenerButGoMap();
-        onVeiwDetailed();
+        onViewDetailed();
         onClickListenerButViewDetailed();
     }
 
     //Обработка события нажатия кнопки ViewDetailed
-    private void onVeiwDetailed() {
-        btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
+    private void onViewDetailed() {
+        Button btnAdvancedSearch = (Button) findViewById(R.id.btnAdvancedSearch);
 
         btnAdvancedSearch.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
-                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
+                        @SuppressLint("HardwareIds") String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                         con.CreateTempTable(androidID);
                         try {
                             machine = con.GetDevice(etSearchText.getText().toString());
@@ -56,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
                                 con.InsertToTempTable(androidID, etSearchText.getText().toString());
                                 MainActivity.this.startActivity(myIntent);
                             } else {
-                                Toast.makeText(context, "Device not found in table", Toast.LENGTH_SHORT).show();
-                                return;
+                                Toast.makeText(MainActivity.this, "Device not found in table", Toast.LENGTH_SHORT).show();
+                                //return;
                             }
                         } catch (Exception e) {
-                            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -71,21 +68,21 @@ public class MainActivity extends AppCompatActivity {
     //Обработка кнопки Go Map для показа всех устройств
     private void onClickListenerButGoMap() {
         radio_group = (RadioGroup) findViewById(R.id.rgSelector);
-        btnShowOnMap = (Button) findViewById(R.id.btnShowOnMap);
+        Button btnShowOnMap = (Button) findViewById(R.id.btnShowOnMap);
 
         btnShowOnMap.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //Magic workaround to get statements for Switch
-                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        @SuppressLint("HardwareIds") String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                         con.CreateTempTable(androidID);
                         int selected_filter = radio_group.getCheckedRadioButtonId();
                         View rbt = radio_group.findViewById(selected_filter);
                         int rbtID = radio_group.indexOfChild(rbt);
                         RadioButton btn = (RadioButton) radio_group.getChildAt(rbtID);
                         String selectedTxt = (String) btn.getText();
-                        Intent myIntent = new Intent(MainActivity.context, MapsActivity.class);
+                        Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
                         switch (selectedTxt) {
                             case "Show all devices":
                                 con.InsertToTempTable(androidID);
@@ -106,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onClickListenerButViewDetailed() {
-        btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);
+        Button btnViewDetailed = (Button) findViewById(R.id.btnViewDetailed);
 
         btnViewDetailed.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent myIntent = new Intent(MainActivity.context, ListingActivity.class);
-                        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        Intent myIntent = new Intent(MainActivity.this, ListingActivity.class);
+                        @SuppressLint("HardwareIds") String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                         con.CreateTempTable(androidID);
                         int selected_filter = radio_group.getCheckedRadioButtonId();
                         View rbt = radio_group.findViewById(selected_filter);

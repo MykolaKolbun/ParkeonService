@@ -13,9 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by Sorrow on 08.11.2016.
  */
 public class ConfirmNewDevice extends Activity {
-    static EditText etName;
-    LatLng point;
-    Button Ok, Cancel;
+    private EditText etName;
+    private LatLng point;
+    private Button Ok;
+    //Button Cancel;
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +26,6 @@ public class ConfirmNewDevice extends Activity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         getWindow().setLayout((int)(width*.8),(int) (height*.4));
-        MapsActivity mapsActivity = new MapsActivity();
         etName = (EditText) findViewById(R.id.etMachineName);
 
         onClickOK();
@@ -37,8 +37,7 @@ public class ConfirmNewDevice extends Activity {
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        if(String.valueOf(etName.getText()).equals("")){
-                        }else{
+                        if(!String.valueOf(etName.getText()).equals("")){
                             point = MapsActivity.newPoint;
                             Device machine = new Device(String.valueOf(etName.getText()), point.longitude, point.latitude, 2);
                             DB_connect con = new DB_connect();
@@ -46,10 +45,9 @@ public class ConfirmNewDevice extends Activity {
                                 con.InsertNewDevice(machine);
                                 Ok.setVisibility(View.GONE);
                             } catch (Exception e){
-                                //TODO Show exeption
+                                //TODO Show exception
                             }
                         }
-
                     }
                 }
         );

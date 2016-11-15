@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
         android:hardwareAccelerated="false"
         android:name="android.support.multidex.MultiDexApplication">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,18 +22,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListingActivity" />
-        
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".ConfirmNewDevice"
-            android:theme="@style/AppTheme.ConfirmWindowTheme">
-
-        </activity>
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".ConfirmNewDevice"
+            android:theme="@style/AppTheme.ConfirmWindowTheme"></activity>
     </application>
 
 </manifest>

@@ -1,7 +1,8 @@
 package ua.com.alternatiview.parkeonservice;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,6 +10,12 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,13 +30,11 @@ import java.util.LinkedList;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
-    private GoogleMap mMap;
-    LinkedList<Device> machinesList = new LinkedList<Device>();
-    DB_connect con = new DB_connect();
-    Boolean isDraggable = true;
+    private LinkedList<Device> machinesList = new LinkedList<>();
+    private final DB_connect con = new DB_connect();
     public static LatLng newPoint;
-    private AlertDialog.Builder dialogConfirmLocation, dialogChangeStatus, dialogAddRemark;
-    int intStatus;
+    private AlertDialog.Builder dialogAddDeviceFromStorage, dialogChangeStatus, dialogAddRemark;
+    private int intStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +45,34 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         DB_connect con = new DB_connect();
-        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         machinesList = con.GetTempDevices(androidID);
         mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String androidID = Settings.Secure.getString(getBaseContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         LatLng startPoint = new LatLng(machinesList.get(0).latitude, machinesList.get(0).longitude);
         con.DropTempTable(androidID);
         for (int i = 0; i < machinesList.size(); i++) {
             LatLng point = new LatLng(machinesList.get(i).latitude, machinesList.get(i).longitude);
             Marker m;
             if (machinesList.get(i).status == 1) {
-                m = mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Activated")
+                m = googleMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Activated")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).draggable(true));
                 m.setTag(0);
                 m.showInfoWindow();
             } else {
+                Boolean isDraggable = true;
                 if (machinesList.get(i).status == 9) {
-                    m = mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Defective")
+                    m = googleMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Defective")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
                     m.setTag(0);
                     m.setDraggable(isDraggable);
                     m.showInfoWindow();
                 } else {
-                    m = mMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Not Activated"));
+                    m = googleMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Not Activated"));
                     m.setTag(0);
                     m.setDraggable(isDraggable);
                     m.showInfoWindow();
@@ -80,17 +85,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
             return;
         }
         float zoom = 15;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint, zoom));
-        mMap.setMyLocationEnabled(true);
-        mMap.setOnMapLongClickListener(this);
-        mMap.setOnMarkerDragListener(this);
-        mMap.setOnInfoWindowClickListener(this);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint, zoom));
+        googleMap.setMyLocationEnabled(true);
+        googleMap.setOnMapLongClickListener(this);
+        googleMap.setOnMarkerDragListener(this);
+        googleMap.setOnInfoWindowClickListener(this);
     }
 
+    //Добавление устройства на карту
     @Override
     public void onMapLongClick(LatLng latLng) {
-        newPoint = latLng;
-        startActivity(new Intent(this, ConfirmNewDevice.class));
+        MoveToField(latLng);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     //Обработка события клик на инфоокно - изменение статуса девайса
     private void ChangeStatus(final Marker marker) {
         dialogChangeStatus = new AlertDialog.Builder(this);
-        final String[] strStatus = {"NotActivated", "Activated", "Defective", "Delete"};
+        final String[] strStatus = {"NotActivated", "Activated","Move to storage", "Defective", "Delete"};
         dialogChangeStatus.setTitle("Choose status for device");
         dialogChangeStatus.setSingleChoiceItems(strStatus, 0, new DialogInterface.OnClickListener() {
             @Override
@@ -134,8 +139,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
                         marker.setSnippet("Not Activated");
                         break;
                     case "Move to storage":
-                        intStatus = 8;
-
+                        intStatus = 11;
+                        break;
                     case "Defective":
                         intStatus = 9;
                         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
@@ -143,7 +148,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
                         break;
                     case "Delete": {
                         intStatus = 10;
-                        //TODO Create methot to delete device with additional confirmation
+                        break;
+                        //TODO Create method to delete device with additional confirmation
                     }
                 }
             }
@@ -155,8 +161,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
                 if (intStatus < 10) {
                     DB_connect con = new DB_connect();
                     con.UpdateStatus(String.valueOf(marker.getTitle()), intStatus);
-                } else {
+                }
+                if (intStatus==10) {
                     DeleteDevice(marker);
+                }
+                if (intStatus == 11) {
+                    con.MoveToStock(marker.getTitle());
                 }
             }
         });
@@ -193,7 +203,72 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     }
 
     private void DeleteDevice(final Marker marker) {
-        DB_connect con = new DB_connect();
         con.DeleteDevice(String.valueOf(marker.getTitle()));
+    }
+
+    private void MoveToField(final LatLng latLng){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.new_device_create_choise);
+        dialog.setTitle("Select...");
+        Button btnSelectFromStorage = (Button)dialog.findViewById(R.id.btnFromStorage);
+        dialog.show();
+        btnSelectFromStorage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                final Dialog popup = new Dialog(MapsActivity.this);
+                popup.setContentView(R.layout.device_from_database);
+                popup.setTitle("Devices in the storage");
+                final Spinner spinner = (Spinner) popup.findViewById(R.id.spinner1);
+                LinkedList<String> list;
+                list = con.GetDevicesFromStorage();
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(MapsActivity.this, android.R.layout.simple_spinner_item, list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                Button btnPlaceOnMap = (Button)popup.findViewById(R.id.btnDeviceSelected);
+                btnPlaceOnMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        con.MoveToOnField(spinner.getSelectedItem().toString(),latLng.longitude, latLng.latitude);
+                        popup.dismiss();
+                    }
+                });
+                popup.show();
+            }
+        });
+        Button btnCreateNew = (Button)dialog.findViewById(R.id.btnCreateNew);
+        btnCreateNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                final Dialog popup = new Dialog(MapsActivity.this);
+                popup.setContentView(R.layout.popup__confirm_new_device);
+                final EditText editText = (EditText)popup.findViewById(R.id.etMachineName);
+                Button button = (Button)popup.findViewById(R.id.btnOk);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popup.dismiss();
+                        Device machine = new Device(editText.getText().toString(),latLng.longitude, latLng.latitude);
+                        con.InsertNewDevice(machine);
+
+                    }
+                });
+                popup.show();
+            }
+
+        });
     }
 }
