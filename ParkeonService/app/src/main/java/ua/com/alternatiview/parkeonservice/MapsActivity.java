@@ -60,14 +60,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
             Marker m;
             if (machinesList.get(i).status == 1) {
                 m = googleMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Activated")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).draggable(true));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)).draggable(true));
                 m.setTag(0);
                 m.showInfoWindow();
             } else {
                 Boolean isDraggable = true;
                 if (machinesList.get(i).status == 9) {
                     m = googleMap.addMarker(new MarkerOptions().position(point).title(String.valueOf(machinesList.get(i).machineID)).snippet("Defective")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_defective)).draggable(true));
                     m.setTag(0);
                     m.setDraggable(isDraggable);
                     m.showInfoWindow();
